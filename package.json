@@ -1,0 +1,19 @@
+{
+  "name": "react-wombat",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Kris Witalewski",
+  "license": "MIT",
+  "private": false,
+  "bin": {
+    "rt": "./bin/rt.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/witalewski/react-wombat.git"
+  },
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "commander": "^2.19.0"
+  }
+}
