@@ -88,13 +88,17 @@ const makeDir = (name, options) =>
   );
 
 const createComponentFiles = (name, options) =>
-  makeDir(name, options).then(() =>
-    Promise.all([
-      writeIndexJs(name, options),
-      writeComponentJs(name, options),
-      writeComponentStyledJs(name, options)
-    ]).then(() => console.log("Done."))
-  );
+  makeDir(name, options)
+    .then(() =>
+      Promise.all([
+        writeIndexJs(name, options),
+        writeComponentJs(name, options),
+        writeComponentStyledJs(name, options)
+      ])
+        .then(() => console.log("🐨  Done."))
+        .catch(err => console.log("🐨  Something went wrong:", chalk.red(err)))
+    )
+    .catch(err => console.log("🐨  Something went wrong:", chalk.red(err)));
 
 const { name, connected } = program;
 const path = program.path || "src/components";
