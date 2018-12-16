@@ -8,6 +8,7 @@ const chalk = require("chalk");
 program
   .version("1.0.0")
   .option("-n, --name [componentName]", "Component name")
+  .option("-p, --path [pathToComponents]", "Path to components direcotry")
   .parse(process.argv);
 
 const exec = (cmd, ...log) =>
@@ -48,22 +49,25 @@ const writeFile = (name, contents) =>
     "wriiten."
   );
 
-const writeIndexJs = name => writeFile(`${name}/index.js`, indexJs(name));
-const writeComponentJs = name =>
-  writeFile(`${name}/${name}.js`, componentJs(name));
-const writeComponentStyledJs = name =>
-  writeFile(`${name}/${name}Styled.js`, componentStyledJs(name));
+const writeIndexJs = (name, path) =>
+  writeFile(`${path}/${name}/index.js`, indexJs(name));
+const writeComponentJs = (name, path) =>
+  writeFile(`${path}/${name}/${name}.js`, componentJs(name));
+const writeComponentStyledJs = (name, path) =>
+  writeFile(`${path}/${name}/${name}Styled.js`, componentStyledJs(name));
 
-const makeDir = name =>
-  exec(`mkdir ${name}`, "Directory", chalk.green(name), "created.");
+const makeDir = (name, path) =>
+  exec(`mkdir ${path}/${name}`, "Directory", chalk.green(`${path}/${name}`), "created.");
 
-const createComponentFiles = name =>
-  makeDir(name).then(() =>
+const createComponentFiles = (name, path = "src/components") =>
+  makeDir(name, path).then(() =>
     Promise.all([
-      writeIndexJs(name),
-      writeComponentJs(name),
-      writeComponentStyledJs(name)
+      writeIndexJs(name, path),
+      writeComponentJs(name, path),
+      writeComponentStyledJs(name, path)
     ]).then(() => console.log("Done."))
   );
 
-createComponentFiles(program.name);
+const { name, path } = program;
+
+createComponentFiles(name, path);
