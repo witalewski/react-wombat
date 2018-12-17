@@ -11,7 +11,7 @@ let files;
 program
   .version(packageJson.version)
   .description(packageJson.description)
-  .usage("rw [options] <files ...>")
+  .usage("[options] <files ...>")
   .arguments("<names...>")
   .option("-p, --props <props>", "Component props")
   .option("-c, --connected [stateProps+actions]", "Connect component to redux")
