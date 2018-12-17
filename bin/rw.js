@@ -2,35 +2,68 @@
 "use strict";
 
 const program = require("commander");
+const chalk = require("chalk");
 const createComponentFiles = require("../src/createComponentFiles");
+const packageJson = require("../package.json");
 
-let fileNames;
+let files;
 
 program
-  .version("1.0.0")
+  .version(packageJson.version)
+  .description("🐨 A wombat who eats react boilerplate for breakfast")
+  .usage("rw [options] <files ...>")
   .arguments("<names...>")
-  .option("-p, --path [pathToComponents]", "Path to components direcotry")
-  .option("-c, --connected", "Connect component to redux")
+  .option("-p, --props <props>", "Component props")
+  .option("-c, --connected [stateProps+actions]", "Connect component to redux")
+  .option("-s, --styled", "Create styled component")
+  .option("-f, --flat", "Don't create a separate directory for Component")
   .action(function(names) {
-    fileNames = names;
+    files = names;
   })
   .parse(process.argv);
 
-const getPathForFile = (program, name) => {
-  if (program.path) {
-    return program.path;
+const createComponent = (component, path, options) => {
+  let { connected, styled, props, flat } = options;
+
+  let stateProps, actions;
+  if (typeof connected === "string") {
+    [stateProps, actions] = connected.split("+").map(s => s.split(","));
   }
-  if (name.match(/^[A-Z]/)) {
-    return `src/components/${name}`;
-  }
-  return "src";
+  stateProps = stateProps || [];
+  actions = actions || [];
+
+  props = [...(props ? props.split(",") : []), ...stateProps, ...actions];
+
+  connected = true && connected;
+  flat = true && flat;
+  styled = true && styled;
+
+  return createComponentFiles({
+    component,
+    path: flat ? path : `${path}/${component}`,
+    connected,
+    styled,
+    props,
+    stateProps,
+    actions,
+    flat
+  });
 };
 
-const name = fileNames[0];
-const { connected } = program;
-const path = getPathForFile(program, name);
+const run = (program, files) => {
+  if (!files) {
+    console.log("Usage: ", program.usage());
+    return;
+  }
+  Promise.all(
+    files.map(file => {
+      if (file.match(/^[A-Z]/)) {
+        return createComponent(file, `src/components`, program);
+      }
+    })
+  )
+    .then(() => console.log("🐨  Done."))
+    .catch(err => console.log("🐨  Something went wrong:", chalk.red(err)));
+};
 
-createComponentFiles(name, {
-  path,
-  connected
-});
+run(program, files);

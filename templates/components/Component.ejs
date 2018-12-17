@@ -1,0 +1,37 @@
+import React from 'react';
+<% if (styled) { -%>
+import <%- component %>Styled from "./<%- component %>Styled";
+<% } -%>
+
+export const <%- component %> = (<% if (props.length) { %><%- `{${props.join(', ')}}` %><% } %>) => {
+  return (
+<% if (styled) { -%>
+        <<%- `${component}Styled` %>>
+            
+        </<%- `${component}Styled` %>>
+<% } else { -%>
+        <div>
+    
+        </div>
+<% } _%>
+    );
+}
+
+<% if (connected) { -%>
+const mapStateToProps = state => ({
+<% stateProps.forEach(function(stateProp) { -%>
+    <%- stateProp %>: state.<%- stateProp %>,
+<% }) -%>
+});
+
+const mapDispatchToProps = {
+<% actions.forEach(function(action) { -%>
+    <%- action %>,
+<% }) -%>
+};
+
+export const <%- component %>Connected = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(<%- component %>);
+<% } -%>

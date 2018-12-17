@@ -2,6 +2,7 @@
   "name": "react-wombat",
   "version": "2.1.0",
   "author": "Kris Witalewski",
+  "description": "🐨 A wombat who eats react boilerplate for breakfast",
   "license": "MIT",
   "private": false,
   "bin": {
@@ -13,6 +14,8 @@
   },
   "dependencies": {
     "chalk": "^2.4.1",
-    "commander": "^2.19.0"
+    "commander": "^2.19.0",
+    "ejs": "^2.6.1",
+    "ramda": "^0.26.1"
   }
 }

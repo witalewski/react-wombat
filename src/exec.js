@@ -1,3 +1,4 @@
+const chalk = require("chalk");
 const childProcess = require("child_process");
 
 const exec = (cmd, ...log) =>

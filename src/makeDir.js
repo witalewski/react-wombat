@@ -1,7 +1,7 @@
 const fs = require("fs");
 const chalk = require("chalk");
 const forEachAsync = require("./forEachAsync");
-const exec = require("./exec");
+const getLastPathSegment = require("./getLastPathSegment");
 
 const doesDirExist = name =>
   new Promise(resolve => {
@@ -14,19 +14,24 @@ const getDirsInPath = pathElements =>
   pathElements.map((_, i) => pathElements.slice(0, i + 1).join("/"));
 
 const makeDir = path =>
-  new Promise(async (resolve, reject) => {
-    await forEachAsync(
-      async dirName =>
-        !(await doesDirExist(dirName)) &&
-        (await exec(
-          `mkdir ${dirName}`,
-          "Directory",
-          chalk.green(dirName),
-          "created."
-        )),
+  new Promise((resolve, reject) =>
+    forEachAsync(
+      pathElem =>
+        doesDirExist(pathElem).then(exists =>
+          exists
+            ? resolve()
+            : fs.mkdir(pathElem, { recursive: true, mode: 0o777 }, err =>
+                err
+                  ? reject(err)
+                  : console.log(
+                      "Directory",
+                      chalk.green(getLastPathSegment(path)),
+                      "created."
+                    ) || resolve()
+              )
+        ),
       getDirsInPath(path.split("/"))
-    );
-    resolve();
-  });
+    )
+  );
 
 module.exports = makeDir;
