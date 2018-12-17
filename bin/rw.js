@@ -76,12 +76,12 @@ const writeFile = (name, contents) =>
   );
 
 const writeIndexJs = (name, options) =>
-  writeFile(`${options.path}/${name}/index.js`, indexJs(name, options));
+  writeFile(`${options.path}/index.js`, indexJs(name, options));
 const writeComponentJs = (name, options) =>
-  writeFile(`${options.path}/${name}/${name}.js`, componentJs(name, options));
+  writeFile(`${options.path}/${name}.js`, componentJs(name, options));
 const writeComponentStyledJs = (name, options) =>
   writeFile(
-    `${options.path}/${name}/${name}Styled.js`,
+    `${options.path}/${name}Styled.js`,
     componentStyledJs(name, options)
   );
 
@@ -101,7 +101,7 @@ const forEachAsync = async (op, arr) => {
   }
 };
 
-const makeDir = (name, options) =>
+const makeDir = path =>
   new Promise(async (resolve, reject) => {
     await forEachAsync(
       async dirName =>
@@ -112,13 +112,13 @@ const makeDir = (name, options) =>
           chalk.green(dirName),
           "created."
         )),
-      getDirsInPath([...options.path.split("/"), name])
+      getDirsInPath(path.split("/"))
     );
     resolve();
   });
 
 const createComponentFiles = (name, options) =>
-  makeDir(name, options)
+  makeDir(options.path)
     .then(() =>
       Promise.all([
         writeIndexJs(name, options),
@@ -135,14 +135,14 @@ const getPathForFile = (program, name) => {
     return program.path;
   }
   if (name.match(/^[A-Z]/)) {
-    return "src/components";
+    return `src/components/${name}`;
   }
   return "src";
-}
+};
 
 const name = fileNames[0];
 const { connected } = program;
-const path = getPathForFile(program,name);
+const path = getPathForFile(program, name);
 
 createComponentFiles(name, {
   path,
