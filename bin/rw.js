@@ -85,7 +85,7 @@ const writeComponentStyledJs = (name, options) =>
     componentStyledJs(name, options)
   );
 
-const checkIfDirExists = name =>
+const doesDirExist = name =>
   new Promise(resolve => {
     fs.access(name, fs.constants.F_OK, err =>
       err ? resolve(false) : resolve(true)
@@ -105,7 +105,7 @@ const makeDir = path =>
   new Promise(async (resolve, reject) => {
     await forEachAsync(
       async dirName =>
-        !(await checkIfDirExists(dirName)) &&
+        !(await doesDirExist(dirName)) &&
         (await exec(
           `mkdir ${dirName}`,
           "Directory",
