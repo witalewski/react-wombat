@@ -10,7 +10,7 @@ let files;
 
 program
   .version(packageJson.version)
-  .description("🐨 A wombat who eats react boilerplate for breakfast")
+  .description(packageJson.description)
   .usage("rw [options] <files ...>")
   .arguments("<names...>")
   .option("-p, --props <props>", "Component props")
