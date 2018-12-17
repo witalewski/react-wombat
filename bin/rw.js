@@ -3,13 +3,19 @@
 
 const program = require("commander");
 const childProcess = require("child_process");
+const fs = require("fs");
 const chalk = require("chalk");
+
+let fileNames;
 
 program
   .version("1.0.0")
-  .option("-n, --name [componentName]", "Component name")
+  .arguments("<names...>")
   .option("-p, --path [pathToComponents]", "Path to components direcotry")
   .option("-c, --connected", "Connect component to redux")
+  .action(function(names) {
+    fileNames = names;
+  })
   .parse(process.argv);
 
 const exec = (cmd, ...log) =>
@@ -79,13 +85,37 @@ const writeComponentStyledJs = (name, options) =>
     componentStyledJs(name, options)
   );
 
+const checkIfDirExists = name =>
+  new Promise(resolve => {
+    fs.access(name, fs.constants.F_OK, err =>
+      err ? resolve(false) : resolve(true)
+    );
+  });
+
+const getDirsInPath = pathElements =>
+  pathElements.map((_, i) => pathElements.slice(0, i + 1).join("/"));
+
+const forEachAsync = async (op, arr) => {
+  for (let i = 0; i < arr.length; i++) {
+    await op(arr[i]);
+  }
+};
+
 const makeDir = (name, options) =>
-  exec(
-    `mkdir ${options.path}/${name}`,
-    "Directory",
-    chalk.green(`${options.path}/${name}`),
-    "created."
-  );
+  new Promise(async (resolve, reject) => {
+    await forEachAsync(
+      async dirName =>
+        !(await checkIfDirExists(dirName)) &&
+        (await exec(
+          `mkdir ${dirName}`,
+          "Directory",
+          chalk.green(dirName),
+          "created."
+        )),
+      getDirsInPath([...options.path.split("/"), name])
+    );
+    resolve();
+  });
 
 const createComponentFiles = (name, options) =>
   makeDir(name, options)
@@ -100,8 +130,19 @@ const createComponentFiles = (name, options) =>
     )
     .catch(err => console.log("🐨  Something went wrong:", chalk.red(err)));
 
-const { name, connected } = program;
-const path = program.path || "src/components";
+const getPathForFile = (program, name) => {
+  if (program.path) {
+    return program.path;
+  }
+  if (name.match(/^[A-Z]/)) {
+    return "src/components";
+  }
+  return "src";
+}
+
+const name = fileNames[0];
+const { connected } = program;
+const path = getPathForFile(program,name);
 
 createComponentFiles(name, {
   path,
