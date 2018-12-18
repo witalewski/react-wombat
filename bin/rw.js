@@ -60,7 +60,7 @@ const run = (program, files) => {
       createComponent(file, `src/components`, program)
         .run()
         .future()
-        .map(x => console.log("🐨  Done:", x));
+        .map(() => console.log("🐨  Done."));
     }
   });
 };

@@ -37,12 +37,10 @@ const writeComponentStyledJs = compose(
 const createComponentFiles = data =>
   makeDirsForPath(data.path).chain(_ =>
     [
-      data.flat || writeIndexJs(data),
+      data.flat ? of(true) : writeIndexJs(data),
       writeComponentJs(data),
-      data.styled && writeComponentStyledJs(data)
-    ]
-      .filter(x => typeof x === "object")
-      .reduce(addTasks, of(true))
+      data.styled ? writeComponentStyledJs(data) : of(true)
+    ].reduce(addTasks, of(true))
   );
 
 module.exports = createComponentFiles;
