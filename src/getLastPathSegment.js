@@ -1,6 +1,7 @@
-const R = require("ramda");
+const R = require('ramda');
+const compose = require("folktale/core/lambda/compose")
 
-const getLastPathSegment = R.compose(
+const getLastPathSegment = compose(
   R.last,
   R.split("/")
 );

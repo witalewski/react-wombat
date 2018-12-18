@@ -1,9 +1,11 @@
+const { task } = require('folktale/concurrency/task');
+
 const fs = require("fs");
 
 const readFile = path =>
-  new Promise((resolve, reject) =>
+  task(resolver =>
     fs.readFile(path, "utf8", (err, data) =>
-      err ? reject(err) : resolve(data)
+      err ? resolver.reject(err) : resolver.resolve(data)
     )
   );
 

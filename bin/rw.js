@@ -55,15 +55,14 @@ const run = (program, files) => {
     console.log("Usage: ", program.usage());
     return;
   }
-  Promise.all(
-    files.map(file => {
-      if (file.match(/^[A-Z]/)) {
-        return createComponent(file, `src/components`, program);
-      }
-    })
-  )
-    .then(() => console.log("🐨  Done."))
-    .catch(err => console.log("🐨  Something went wrong:", chalk.red(err)));
+  files.map(file => {
+    if (file.match(/^[A-Z]/)) {
+      createComponent(file, `src/components`, program)
+        .run()
+        .future()
+        .map(x => console.log("🐨  Done:", x));
+    }
+  });
 };
 
 run(program, files);
