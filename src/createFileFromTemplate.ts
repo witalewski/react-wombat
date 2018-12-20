@@ -9,5 +9,5 @@ export const createFileFromTemplate: (
   filename: string
 ) => Task = (data, templatePath, filename) =>
   readFile(require.resolve(templatePath))
-    .chain(template => renderTemplate(template, data))
-    .chain(result => writeFile(data.path, filename, result));
+    .chain((template: string) => renderTemplate(template, data))
+    .chain((result: string) => writeFile(data.path, filename, result));
