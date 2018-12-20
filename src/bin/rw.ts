@@ -32,7 +32,7 @@ const run: (program: any, files: string[]) => void = (program, files) => {
       createComponent(mapParamsToComponentData(file, `src/components`, program))
         .run()
         .future()
-        .map(console.log("🐨  Done."));
+        .map(() => console.log("🐨  Done."));
     }
   });
 };
