@@ -1,17 +1,14 @@
 const fs = require("fs");
 const chalk = require("chalk");
-const getLastPathSegment = require("./getLastPathSegment");
+const { task } = require("folktale/concurrency/task");
 
-const writeFile = (path, contents) =>
-  new Promise((resolve, reject) =>
-    fs.writeFile(path, contents, err =>
+const writeFile = (path, filename, contents) =>
+  task(resolver =>
+    fs.writeFile(`${path}/${filename}`, contents, err =>
       err
-        ? reject(err)
-        : console.log(
-            "File",
-            chalk.green(getLastPathSegment(path)),
-            "written."
-          ) || resolve(true)
+        ? resolver.reject(err)
+        : console.log("File", chalk.green(filename), "written.") ||
+          resolver.resolve(true)
     )
   );
 

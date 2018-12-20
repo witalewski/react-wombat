@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 "use strict";
 
-const program = require("commander");
-const chalk = require("chalk");
-const createComponentFiles = require("../src/createComponentFiles");
 const packageJson = require("../package.json");
+const program = require("commander");
+const mapParamsToComponentData = require("../src/mapParamsToComponentData");
+const createComponent = require("../src/createComponent");
 
 let files;
 
@@ -22,34 +22,6 @@ program
   })
   .parse(process.argv);
 
-const createComponent = (component, path, options) => {
-  let { connected, styled, props, flat } = options;
-
-  let stateProps, actions;
-  if (typeof connected === "string") {
-    [stateProps, actions] = connected.split("+").map(s => s.split(","));
-  }
-  stateProps = stateProps || [];
-  actions = actions || [];
-
-  props = [...(props ? props.split(",") : []), ...stateProps, ...actions];
-
-  connected = true && connected;
-  flat = true && flat;
-  styled = true && styled;
-
-  return createComponentFiles({
-    component,
-    path: flat ? path : `${path}/${component}`,
-    connected,
-    styled,
-    props,
-    stateProps,
-    actions,
-    flat
-  });
-};
-
 const run = (program, files) => {
   if (!files) {
     console.log("Usage: ", program.usage());
@@ -57,7 +29,7 @@ const run = (program, files) => {
   }
   files.map(file => {
     if (file.match(/^[A-Z]/)) {
-      createComponent(file, `src/components`, program)
+      createComponent(mapParamsToComponentData(file, `src/components`, program))
         .run()
         .future()
         .map(() => console.log("🐨  Done."));

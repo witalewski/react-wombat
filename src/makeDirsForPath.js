@@ -1,6 +1,6 @@
 const mkdirp = require("mkdirp");
-const { task } = require("folktale/concurrency/task");
 const chalk = require("chalk");
+const { task } = require("folktale/concurrency/task");
 
 const makeDirsForPath = path =>
   task(resolver =>

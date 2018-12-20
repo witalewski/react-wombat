@@ -1,14 +1,14 @@
 import React from 'react';
 <% if (styled) { -%>
-import <%- component %>Styled from "./<%- component %>Styled";
+import <%- name %>Styled from "./<%- name %>Styled";
 <% } -%>
 
-export const <%- component %> = (<% if (props.length) { %><%- `{${props.join(', ')}}` %><% } %>) => {
+export const <%- name %> = (<% if (props.length) { %><%- `{${props.join(', ')}}` %><% } %>) => {
   return (
 <% if (styled) { -%>
-        <<%- `${component}Styled` %>>
+        <<%- `${name}Styled` %>>
             
-        </<%- `${component}Styled` %>>
+        </<%- `${name}Styled` %>>
 <% } else { -%>
         <div>
     
@@ -30,8 +30,8 @@ const mapDispatchToProps = {
 <% }) -%>
 };
 
-export const <%- component %>Connected = connect(
+export const <%- name %>Connected = connect(
     mapStateToProps,
     mapDispatchToProps
-)(<%- component %>);
+)(<%- name %>);
 <% } -%>
