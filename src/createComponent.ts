@@ -2,7 +2,7 @@ import { of, Task } from "folktale/concurrency/task";
 import { createFileFromTemplate } from "./createFileFromTemplate";
 import { makeDirsForPath } from "./makeDirsForPath";
 
-export const createComponent: (data: any) => Task = data => {
+export const createComponent: (data: componentData) => Task = data => {
   const tasks = [
     createFileFromTemplate(
       data,

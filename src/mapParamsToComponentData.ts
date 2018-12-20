@@ -1,3 +1,5 @@
+// import {} from "./global.d"
+
 const getStatePropsAndActions: (options: any) => string[][] = options => {
   let stateProps: string[], actions: string[];
   if (typeof options.connected === "string") {
@@ -36,7 +38,7 @@ export const mapParamsToComponentData: (
   name: string,
   basePath: string,
   options: string
-) => any = (name, basePath, options) => {
+) => componentData = (name, basePath, options) => {
   const [stateProps, actions]: string[][] = getStatePropsAndActions(options);
   const props: string[] = getProps(options, stateProps, actions);
 
@@ -50,9 +52,9 @@ export const mapParamsToComponentData: (
     path,
     connected,
     styled,
+    flat,
     props,
     stateProps,
-    actions,
-    flat
+    actions
   };
 };
