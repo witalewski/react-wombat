@@ -2,7 +2,7 @@
   "name": "react-wombat",
   "version": "3.2.0",
   "author": "Kris Witalewski",
-  "description": "🐨 A wombat who eats React boilerplate for breakfast",
+  "description": "🐨 A wombat who eats React and Redux boilerplate for breakfast",
   "license": "MIT",
   "private": false,
   "bin": {
