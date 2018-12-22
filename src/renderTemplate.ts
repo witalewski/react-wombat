@@ -1,14 +1,14 @@
 import ejs from "ejs";
-import { task, Void } from "folktale/concurrency/task";
+import { task, Task, Void } from "folktale/concurrency/task";
 
-export const renderTemplate: (template: any, data: any) => any = (
-  template,
-  data
-) =>
+export const renderTemplate: (
+  template: string,
+  data: componentData | actionsData
+) => Task = (template, data) =>
   task(
     (resolver: {
-      resolve: (value: any) => Void;
-      reject: (reason: any) => Void;
+      resolve: (value: string) => Void;
+      reject: (reason: string) => Void;
     }) =>
       ejs
         .render(template, data, { async: true })

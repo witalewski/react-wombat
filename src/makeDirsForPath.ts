@@ -2,7 +2,9 @@ import mkdirp from "mkdirp";
 import chalk from "chalk";
 import { task, Task, Void } from "folktale/concurrency/task";
 
-export const makeDirsForPath: (data: componentData) => Task = data =>
+export const makeDirsForPath: (
+  data: componentData | actionsData
+) => Task = data =>
   task(
     (resolver: {
       resolve: (value: any) => Void;

@@ -1,0 +1,13 @@
+<% actions.forEach(function(action) { -%>
+export const <%- action.type %> = "<%- action.type %>";
+<% }) -%>
+
+<% actions.forEach(function(action) { -%>
+export const <%- action.name %> = (<%- action.params.join(",") %>) => ({
+    type: <%- action.type %>,
+<% action.params.forEach(function(param) { -%>
+    <%- param %>,
+<% }) -%>
+});
+
+<% }) -%>

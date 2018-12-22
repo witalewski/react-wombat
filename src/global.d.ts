@@ -8,3 +8,16 @@ interface componentData {
   stateProps: string[];
   actions: string[];
 }
+
+interface action {
+  name: string;
+  params: string[];
+  type: string;
+}
+
+interface actionsData {
+  name: string;
+  path: string;
+  actions: action[];
+  flat: boolean;
+}
