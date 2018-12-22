@@ -2,14 +2,14 @@ import { of, Task } from "folktale/concurrency/task";
 import { createFileFromTemplate } from "./createFileFromTemplate";
 import { makeDirsForPath } from "./makeDirsForPath";
 
-const addComponent: (data: componentData) => Task = data =>
+const makeComponentFile: (data: componentData) => Task = data =>
   createFileFromTemplate(
     data,
     "../templates/components/Component.ejs",
     `${data.name}.js`
   );
 
-const addComponentStyled: (data: componentData) => Task = data =>
+const makeComponentStyledFile: (data: componentData) => Task = data =>
   data.styled
     ? createFileFromTemplate(
         data,
@@ -18,7 +18,7 @@ const addComponentStyled: (data: componentData) => Task = data =>
       )
     : of(true);
 
-const addIndex: (data: componentData) => Task = data =>
+const makeIndexFile: (data: componentData) => Task = data =>
   data.flat
     ? of(true)
     : createFileFromTemplate(
@@ -27,12 +27,10 @@ const addIndex: (data: componentData) => Task = data =>
         `${data.name}Styled.js`
       );
 
-const addFiles: (data: componentData) => Task = data =>
-  [addComponent(data), addComponentStyled(data), addIndex(data)].reduce(
-    (acc, task) => acc.and(task),
-    of(true)
+const makeFiles: (data: componentData) => Task = data =>
+  [makeComponentFile(data), makeComponentStyledFile(data), makeIndexFile(data)].reduce(
+    (acc, task) => acc.and(task)
   );
 
-export const createComponent: (data: componentData) => Task = data => {
-  return makeDirsForPath(data.path).chain(_ => addFiles(data));
-};
+export const createComponent: (data: componentData) => Task = data =>
+  makeDirsForPath(data).chain(makeFiles);
