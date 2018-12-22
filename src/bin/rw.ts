@@ -3,10 +3,10 @@
 
 import chalk from "chalk";
 import program from "commander";
-import { mapParamsToComponentData } from "../mapParamsToComponentData";
-import { mapParamsToActionsData } from "../mapParamsToActionsData";
-import { createComponent } from "../createComponent";
-import { createActions } from "../createActions";
+import { mapParamsToComponentData } from "../component/mapParamsToComponentData";
+import { mapParamsToActionsData } from "../actions/mapParamsToActionsData";
+import { createComponent } from "../component/createComponent";
+import { createActions } from "../actions/createActions";
 const packageJson = require("../../package.json");
 
 let files;

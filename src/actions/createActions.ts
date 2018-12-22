@@ -1,11 +1,11 @@
 import { Task } from "folktale/concurrency/task";
-import { createFileFromTemplate } from "./createFileFromTemplate";
-import { makeDirsForPath } from "./makeDirsForPath";
+import { createFileFromTemplate } from "../file/createFileFromTemplate";
+import { makeDirsForPath } from "../file/makeDirsForPath";
 
 const makeActionsFile: (data: actionsData) => Task = data =>
   createFileFromTemplate(
     data,
-    "../templates/state/actions.ejs",
+    "../../templates/state/actions.ejs",
     `${data.name}.js`
   );
 
