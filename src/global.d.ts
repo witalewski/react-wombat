@@ -21,3 +21,9 @@ interface actionsData {
   actions: action[];
   flat: boolean;
 }
+
+interface reducerData {
+  name: string;
+  path: string;
+  flat: boolean;
+}

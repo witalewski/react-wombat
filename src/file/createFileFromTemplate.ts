@@ -4,7 +4,7 @@ import { readFile } from "./readFile";
 import { writeFile } from "./writeFile";
 
 export const createFileFromTemplate: (
-  data: componentData | actionsData,
+  data: componentData | actionsData | reducerData,
   templatePath: string,
   filename: string
 ) => Task = (data, templatePath, filename) =>

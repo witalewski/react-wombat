@@ -3,7 +3,7 @@ import { task, Task, Void } from "folktale/concurrency/task";
 
 export const renderTemplate: (
   template: string,
-  data: componentData | actionsData
+  data: componentData | actionsData | reducerData
 ) => Task = (template, data) =>
   task(
     (resolver: {

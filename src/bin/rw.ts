@@ -5,8 +5,10 @@ import chalk from "chalk";
 import program from "commander";
 import { mapParamsToComponentData } from "../component/mapParamsToComponentData";
 import { mapParamsToActionsData } from "../actions/mapParamsToActionsData";
+import { mapParamsToReducerData } from "../reducer/mapParamsToReducerData";
 import { createComponent } from "../component/createComponent";
 import { createActions } from "../actions/createActions";
+import { createReducer } from "../reducer/createReducer";
 const packageJson = require("../../package.json");
 
 let files;
@@ -19,7 +21,10 @@ program
   .option("-p, --props <props>", "Component props")
   .option("-c, --connected [stateProps+actions]", "Connect Component to redux")
   .option("-s, --styled", "Create styled Component")
-  .option("-f, --flat", "Don't create a separate directory for Component or actions")
+  .option(
+    "-f, --flat",
+    "Don't create a separate directory for Component or actions"
+  )
   .option("-a, --actions <actions>", "Create actions in actions file")
   .action(function(names) {
     files = names;
@@ -44,6 +49,14 @@ const run: (program: any, files: string[]) => void = (program, files) => {
       } else if (file.match(/Actions$/)) {
         return createActions(
           mapParamsToActionsData(file, "src/state", { ...program })
+        );
+      } else if (file === "reducer") {
+        return createReducer(
+          mapParamsToReducerData(file, "src/state", { ...program, flat: true })
+        );
+      } else if (file.match(/Reducer$/)) {
+        return createReducer(
+          mapParamsToReducerData(file, "src/state", { ...program })
         );
       }
     })

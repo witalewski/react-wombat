@@ -3,7 +3,7 @@ import chalk from "chalk";
 import { task, Task, Void } from "folktale/concurrency/task";
 
 export const makeDirsForPath: (
-  data: componentData | actionsData
+  data: componentData | actionsData | reducerData
 ) => Task = data =>
   task(
     (resolver: {
