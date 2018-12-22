@@ -1,4 +1,4 @@
-import { of, Task } from "folktale/concurrency/task";
+import { Task } from "folktale/concurrency/task";
 import { createFileFromTemplate } from "./createFileFromTemplate";
 import { makeDirsForPath } from "./makeDirsForPath";
 
