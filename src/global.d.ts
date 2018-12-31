@@ -1,6 +1,9 @@
-interface componentData {
+interface Payload {
   name: string;
   path: string;
+}
+
+interface ReactComponentPayload extends Payload {
   connected: boolean;
   styled: boolean;
   flat: boolean;
@@ -9,21 +12,17 @@ interface componentData {
   actions: string[];
 }
 
-interface action {
+interface ReduxAction {
   name: string;
   params: string[];
   type: string;
 }
 
-interface actionsData {
-  name: string;
-  path: string;
-  actions: action[];
+interface ReduxActionsPayload extends Payload {
+  actions: ReduxAction[];
   flat: boolean;
 }
 
-interface reducerData {
-  name: string;
-  path: string;
+interface ReduxReducerPayload extends Payload {
   flat: boolean;
 }

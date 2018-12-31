@@ -3,7 +3,7 @@ import { task, Task, Void } from "folktale/concurrency/task";
 
 export const renderTemplate: (
   template: string,
-  data: componentData | actionsData | reducerData
+  data: ReactComponentPayload | ReduxActionsPayload | ReduxReducerPayload
 ) => Task = (template, data) =>
   task(
     (resolver: {

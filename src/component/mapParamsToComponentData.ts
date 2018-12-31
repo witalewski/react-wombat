@@ -2,7 +2,7 @@ import compose from "folktale/core/lambda/compose";
 
 const addStatePropsAndActions: (
   connected: any
-) => (data: componentData) => componentData = connected => data => {
+) => (data: ReactComponentPayload) => ReactComponentPayload = connected => data => {
   let stateProps: string[] = [],
     actions: string[] = [];
   if (typeof connected === "string") {
@@ -19,7 +19,7 @@ const addStatePropsAndActions: (
 
 const addProps: (
   props: string
-) => (data: componentData) => componentData = props => data => ({
+) => (data: ReactComponentPayload) => ReactComponentPayload = props => data => ({
   ...data,
   props: [
     ...(props ? props.split(",") : []),
@@ -32,7 +32,7 @@ export const mapParamsToComponentData: (
   name: string,
   basePath: string,
   options: any
-) => componentData = (name, basePath, options) =>
+) => ReactComponentPayload = (name, basePath, options) =>
   compose(
     addProps(options.props),
     addStatePropsAndActions(options.connected)

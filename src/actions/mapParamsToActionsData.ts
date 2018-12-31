@@ -2,7 +2,7 @@ export const mapParamsToActionsData: (
   name: string,
   basePath: string,
   options: any
-) => actionsData = (name, basePath, options) => ({
+) => ReduxActionsPayload = (name, basePath, options) => ({
   name,
   path: options.flat ? basePath : `${basePath}/actions`,
   flat: options.flat,

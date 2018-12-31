@@ -2,14 +2,14 @@ import { of, Task } from "folktale/concurrency/task";
 import { createFileFromTemplate } from "../file/createFileFromTemplate";
 import { makeDirsForPath } from "../file/makeDirsForPath";
 
-const makeComponentFile: (data: componentData) => Task = data =>
+const makeComponentFile: (data: ReactComponentPayload) => Task = data =>
   createFileFromTemplate(
     data,
     "../../templates/components/Component.ejs",
     `${data.name}.js`
   );
 
-const makeComponentStyledFile: (data: componentData) => Task = data =>
+const makeComponentStyledFile: (data: ReactComponentPayload) => Task = data =>
   data.styled
     ? createFileFromTemplate(
         data,
@@ -18,7 +18,7 @@ const makeComponentStyledFile: (data: componentData) => Task = data =>
       )
     : of(true);
 
-const makeIndexFile: (data: componentData) => Task = data =>
+const makeIndexFile: (data: ReactComponentPayload) => Task = data =>
   data.flat
     ? of(true)
     : createFileFromTemplate(
@@ -27,12 +27,12 @@ const makeIndexFile: (data: componentData) => Task = data =>
         `index.js`
       );
 
-const makeFiles: (data: componentData) => Task = data =>
+const makeFiles: (data: ReactComponentPayload) => Task = data =>
   [
     makeComponentFile(data),
     makeComponentStyledFile(data),
     makeIndexFile(data)
   ].reduce((acc, task) => acc.and(task));
 
-export const createComponent: (data: componentData) => Task = data =>
+export const createComponent: (data: ReactComponentPayload) => Task = data =>
   makeDirsForPath(data).chain(makeFiles);
